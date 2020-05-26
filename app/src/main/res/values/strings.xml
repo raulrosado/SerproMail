@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Serpro-Mail</string>
+    <string name="dialog_fire_missiles">Serpro-Mail</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="hint_nombre">Agregue el nombre</string>
+    <string name="hint_email">Agregue el correo</string>
+    <string name="hint_password">Agregue la contraseña</string>
 </resources>
