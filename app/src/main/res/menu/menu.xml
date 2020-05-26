@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_icreturn" android:title="Atras"
+        app:showAsAction="always"
+        android:visible="false"
+        android:icon="@drawable/ic_arrow_back_black_24dp"
+        android:iconTintMode="add"
+        />
+    <item
+        android:id="@+id/menu_setting"
+        android:title="Configuracion"
+        app:showAsAction="always"
+        android:visible="true"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:iconTintMode="add"
+        />
+</menu>
