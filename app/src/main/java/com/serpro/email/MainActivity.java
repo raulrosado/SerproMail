@@ -1,11 +1,17 @@
 package com.serpro.email;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,55 +20,54 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import javax.mail.Message;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
+    ConexionSQLiteHelper conn;
     Button button;
     TextView textView;
+    BottomNavigationView bottomNavigation;
+    String nombre, email, password;
+    Chats fragmentChat;
+    Personas fragmentPersonas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        conn = new ConexionSQLiteHelper(getApplicationContext());//conexion  con la bd
+
+        fragmentChat = new Chats();
+        fragmentPersonas = new Personas();
+        getSupportFragmentManager().beginTransaction().add(R.id.contenedorFragment,fragmentChat).commit();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         button = findViewById(R.id.button);
-        textView = findViewById(R.id.textView);
+        bottomNavigation = findViewById(R.id.bottomNavigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        switch (item.getItemId()){
+                            case R.id.menu_mensajes:
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MailService mailService = new MailService();
-                try {
-
-
-                    mailService.login("imap.nauta.cu","raulrosado91@nauta.cu", "Analia*91");
-                    Integer cantidad = mailService.getMessageCount();
-
-                    textView.setText("cantidad de correos: "+ cantidad.toString());
-                    Toast.makeText(MainActivity.this, "cantidad de mensajes: "+ cantidad.toString(), Toast.LENGTH_SHORT).show();
-                    Log.d("mail", "cargo los mensages: "+cantidad.toString());
-
-                    Message[] mensajes = mailService.getMessages();
-                    for (int i=0;i<mensajes.length;i++)
-                    {
-                        System.out.println("From:"+mensajes[i].getFrom()[0].toString());
-                        System.out.println("Subject:"+mensajes[i].getSubject());
-
-                        Log.d("mail", "From:"+mensajes[i].getFrom()[0].toString());
-                        Log.d("mail", "Subject:"+mensajes[i].getSubject());
+                                transaction.replace(R.id.contenedorFragment,fragmentChat);
+                                break;
+                            case R.id.menu_personas:
+                                item.setEnabled(true);
+                                transaction.replace(R.id.contenedorFragment,fragmentPersonas);
+                                break;
+                        }
+                        transaction.commit();
+                        return false;
                     }
-
-                    mailService.logout();
-                }catch (Exception e){
-                    Log.d("mail", "error: "+e);
                 }
-
-            }
-        });
-
+        );
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu){
@@ -73,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         itemS = menu.findItem(R.id.menu_setting);
         itemR.setVisible(false);
         itemS.setVisible(true);
-
         return true;
     }
 
@@ -89,4 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(option_menu);
         }
     }
+
+
 }

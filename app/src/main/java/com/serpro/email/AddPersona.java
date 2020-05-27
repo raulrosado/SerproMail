@@ -2,46 +2,18 @@ package com.serpro.email;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-public class Setting extends AppCompatActivity {
-    LinearLayout addCuentas;
-    TextView nombreUsuarioCuenta;
+public class AddPersona extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
-
-        nombreUsuarioCuenta = findViewById(R.id.nombreUsuarioCuenta);
-
-        try {
-            SharedPreferences preferencias=getSharedPreferences("usuarioactivo", Context.MODE_PRIVATE);
-            String nombreusuario = preferencias.getString("Nombre","");
-            SharedPreferences.Editor editor=preferencias.edit();
-            nombreUsuarioCuenta.setText(nombreusuario);
-
-        }catch (Exception e){}
-
-
-        addCuentas = findViewById(R.id.addCuentas);
-        addCuentas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AdministrarCuentas.class);
-                startActivity(intent);
-            }
-        });
-
+        setContentView(R.layout.activity_add_persona);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu){

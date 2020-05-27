@@ -6,4 +6,7 @@
     <string name="hint_nombre">Agregue el nombre</string>
     <string name="hint_email">Agregue el correo</string>
     <string name="hint_password">Agregue la contraseña</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

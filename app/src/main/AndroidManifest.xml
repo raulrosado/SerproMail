@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AdministrarCuentas"></activity>
+        <activity android:name=".AddPersona"></activity>
+        <activity android:name=".AdministrarCuentas" />
         <activity android:name=".Setting" />
         <activity android:name=".MainActivity">
             <intent-filter>
