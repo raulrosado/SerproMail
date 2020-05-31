@@ -115,6 +115,12 @@ public class MensajesChat extends AppCompatActivity implements View.OnClickListe
                     mensajesEmails.setMensaje(cursor.getString(3));
                     mensajesEmails.setEstado(cursor.getInt(4));
                     listaMensajes.add(mensajesEmails);
+
+                    Log.d("ENBD", "idcuenta:"+cursor.getString(1)+"-- idto: "+ cursor.getString(2));
+
+
+
+
                     AdapterMensajes adapterMensajes = new AdapterMensajes(listaMensajes, getApplicationContext(),email);
                     adapterMensajes.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -144,8 +150,10 @@ public class MensajesChat extends AppCompatActivity implements View.OnClickListe
         String sAsunto = "SerproApiClient";
         String sMensaje = edText.getText().toString().trim();
         clsEnviaCorreo objCorreo = new clsEnviaCorreo(getApplicationContext(), sCorreo, sAsunto, sMensaje, email,password);
+        String sendDate = objCorreo.getSendD();
         objCorreo.execute();
-        conn.addMensaje(email,idEmailSelect,sMensaje,"");
+
+        conn.addMensaje(email,idEmailSelect,sMensaje,"", sendDate);
         edText.setText("");
         Funciones.loadEmailServer(getApplicationContext(),email,password);
         loadMensajesUser(idEmailSelect);

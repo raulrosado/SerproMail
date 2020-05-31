@@ -26,6 +26,7 @@ public class clsEnviaCorreo extends AsyncTask<Void,Void,Void> {
     private String A_Mensaje;
     private String emailCuentaSelect;
     private String passwordCuentaSelect;
+    private String sendDate = null;
 
     private ProgressDialog progreso;
 
@@ -98,11 +99,16 @@ public class clsEnviaCorreo extends AsyncTask<Void,Void,Void> {
             mm.addRecipient(Message.RecipientType.TO, new InternetAddress(A_Correo));
             mm.setSubject(A_Asunto);
             mm.setText(A_Mensaje);
+//            sendDate = mm.getSentDate().toString();
             Transport.send(mm);
 
         } catch (MessagingException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String getSendD(){
+        return sendDate;
     }
 }

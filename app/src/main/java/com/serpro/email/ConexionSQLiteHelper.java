@@ -99,18 +99,17 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         Log.d(TAG, "New contacto inserted into sqlite: " + lid);
     }
 
-    public void addMensaje(String idCuenta,String idTo,String mensaje, String adjunto) {
+    public void addMensaje(String idCuenta,String idTo,String mensaje, String adjunto, String reciverdate) {
         Integer count =0;
         long lid = 0;
         SQLiteDatabase db = this.getReadableDatabase();   //se conecta a la db
         try {
-          Cursor cursor = db.rawQuery("SELECT "+ utilidades.M_mensaje +" FROM " + utilidades.TABLA_MENSAJE + " WHERE "+utilidades.M_mensaje+" = '" + mensaje
-                  + "' AND "+utilidades.M_idTo+" = '"+idTo+"' AND "+utilidades.M_idCuenta+" = '"+idCuenta+"' ", null);
+          Cursor cursor = db.rawQuery("SELECT "+ utilidades.M_mensaje +" FROM " + utilidades.TABLA_MENSAJE + " WHERE "+utilidades.M_reciverdate+" = '"+reciverdate+"' ", null);
+
           Log.d(TAG, "cantidad: "+cursor.getCount());
           count = cursor.getCount();
           if(cursor.moveToNext()){
               Log.d(TAG, "error ya esta en la bd");
-
           }else{
         //agrego
               SQLiteDatabase db2 = this.getWritableDatabase();   //se conecta a la db
@@ -121,6 +120,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
               values.put(utilidades.M_mensaje, mensaje);
               values.put(utilidades.M_adjunto, adjunto);
               values.put(utilidades.M_estado, 0);
+              values.put(utilidades.M_reciverdate, reciverdate);
               // Inserting Row
               lid = db2.insert(utilidades.TABLA_MENSAJE, null, values);
               db2.close(); // Closing database connection

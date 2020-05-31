@@ -130,11 +130,6 @@ public class Funciones {
 //        toast.show();
 //    }
 
-//    Folder folder = imapStore.getFolder("INBOX"); // get reference for inbox folder
-//    UIDFolder uf = (UIDFolder)folder; // cast folder to UIDFolder interface
-//    folder.open(Folder.READ_ONLY); // open folder
-//    Message messages[] = folder.getMessages(); // get all messages
-//    Long messageId = uf.getUID(messages[0]); // get message Id of first message in the inbox
 
     public  static void loadEmailServer(Context context, String email, String password){
         ConexionSQLiteHelper conn;
@@ -186,50 +181,21 @@ public class Funciones {
 
                 String a =  current.getSubject();
                 String b = "SerproApiClient";
+
+                String reciverdate;
 // son iguales
                 if (a.equalsIgnoreCase(b)) {
                     System.out.println("lol message from: " + ((InternetAddress) current.getFrom()[0]).getAddress());
-                    System.out.println("lol reciverdate: " + current.getReceivedDate().toString());
+                    System.out.println("lol reciverdate: " + current.getSentDate().toString());
                    // System.out.println("lol header: " + current.getUID(current));
                     System.out.println("lol message " + Funciones.getText(current));
                     System.out.println("---------------------------------------------");
                     System.out.println("a y b son iguales");
-                    conn.addMensaje(email,((InternetAddress) current.getFrom()[0]).getAddress(),Funciones.getText(current),"");
+
+                    reciverdate = current.getSentDate().toString();
+                    conn.addMensaje(email,((InternetAddress) current.getFrom()[0]).getAddress(),Funciones.getText(current),"", reciverdate);
                 }
             }
-//
-//
-////                        Object content = current.getContent();
-////                        if (content instanceof MimeMultipart) {
-////                            System.out.println("lol <<<<<<<<<MULTIPART>>>>>>>>>");
-////                            for (int i = 0; i < ((MimeMultipart) content).getCount(); i++) {
-////
-////                                System.out.println("lol sub contentType "+((MimeMultipart) content).getBodyPart(i).getContentType());
-////                                System.out.println("lol " + getText(((MimeMultipart) content).getBodyPart(i)));
-////                                String c = getText(((MimeMultipart) content).getBodyPart(i));
-////                                System.out.println("lol message "+i+" " + c);
-////                            }
-////                        } else {
-////                            System.out.println("lol <<<<<<<<<<<NO MULTIPART>>>>>>>>>>");
-////                            System.out.println("lol message "+getText((Part)content));
-////                        }
-//                    }
-//
-//                    for (int i=0;i<mensajes.length;i++)
-//                    {
-//
-//                        Log.d("mail", "From:"+mensajes[i].getFrom()[0].toString());
-//                        Log.d("mail", "Subject:"+mensajes[i].getSubject());
-//
-//                        if(mensajes[i].getFrom()[0].toString() == "raulrosado91@nauta.cu"){
-//                            Log.d("mio", "estos mensajes son mios");
-//                        }
-//
-//                        if(mensajes[i].getSubject()=="......"){
-//                            Log.d("mail", "imprimio0ooooo");
-//
-//                        }
-//                    }
             mailService.logout();
         }catch (Exception e){
             Log.d("mail", "error: "+e);
