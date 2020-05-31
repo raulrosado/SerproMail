@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
-        android:layout_weight="0.9"
+        android:layout_weight="0.8"
         android:orientation="vertical">
 
         <FrameLayout
@@ -30,9 +30,13 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:animationCache="true"
         android:background="#ffffff"
-        app:menu="@menu/menuinferior"
-        />
+        android:clipChildren="false"
+        app:itemHorizontalTranslationEnabled="false"
+        app:labelVisibilityMode="auto"
+        app:menu="@menu/menuinferior" />
 </LinearLayout>
 
 </LinearLayout>

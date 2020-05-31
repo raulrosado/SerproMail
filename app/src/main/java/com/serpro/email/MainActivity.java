@@ -41,12 +41,27 @@ public class MainActivity extends AppCompatActivity{
 
         fragmentChat = new Chats();
         fragmentPersonas = new Personas();
+
         getSupportFragmentManager().beginTransaction().add(R.id.contenedorFragment,fragmentChat).commit();
+        try {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            if(getIntent().getExtras().getInt("dvengo") == 2){
+                 transaction.replace(R.id.contenedorFragment,fragmentPersonas);
+                 Log.d("mail","muestro el fragment Personas");
+            }else{
+                transaction.replace(R.id.contenedorFragment,fragmentChat);
+                Log.d("mail","muestro el fragment chat");
+            }
+            transaction.commit();
+
+        }catch (Exception e){
+
+        }
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        button = findViewById(R.id.button);
         bottomNavigation = findViewById(R.id.bottomNavigation);
         bottomNavigation.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -55,16 +70,14 @@ public class MainActivity extends AppCompatActivity{
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         switch (item.getItemId()){
                             case R.id.menu_mensajes:
-
                                 transaction.replace(R.id.contenedorFragment,fragmentChat);
                                 break;
                             case R.id.menu_personas:
-                                item.setEnabled(true);
                                 transaction.replace(R.id.contenedorFragment,fragmentPersonas);
                                 break;
                         }
                         transaction.commit();
-                        return false;
+                        return true;
                     }
                 }
         );

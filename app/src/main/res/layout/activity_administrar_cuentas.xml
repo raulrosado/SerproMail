@@ -38,62 +38,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Puedes agregar varias cuentas y cambiarte entre ellas para ver sus mensajes"
-        android:textColor="@color/colorTitles2"
+        android:textColor="#444"
         android:layout_marginTop="20dp"
         android:textSize="12dp"
         />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardNewCuenta"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginTop="80dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/edtnombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_nombre"
-                android:inputType="textPersonName"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:padding="20dp" />
-
-            <EditText
-                android:id="@+id/edtemail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_email"
-                android:inputType="textEmailAddress"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:layout_marginTop="10dp"
-                android:padding="20dp" />
-
-            <EditText
-                android:id="@+id/edtpassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_password"
-                android:inputType="textPassword"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:layout_marginTop="10dp"
-                android:padding="20dp" />
-
-            <Button
-                android:id="@+id/btnAdddCuenta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Agregar" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
 
 </LinearLayout>

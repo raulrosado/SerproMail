@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <padding android:left="1.5dip" android:top="1.5dip" android:right="1.5dip" android:bottom="1.5dip" />
+            <solid android:color="#00e2e2e2" />
+            <corners android:radius="@dimen/Social_spacing_middle" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:left="1.5dip" android:top="1.5dip" android:right="1.5dip" android:bottom="1.5dip" />
+            <solid android:color="#05e2e2e2" />
+            <corners android:radius="@dimen/Social_spacing_middle" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:left="1.5dip" android:top="1.5dip" android:right="1.5dip" android:bottom="1.5dip" />
+            <solid android:color="#0ae2e2e2" />
+            <corners android:radius="@dimen/Social_spacing_middle" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:left="1.5dip" android:top="1.5dip" android:right="1.5dip" android:bottom="1.5dip" />
+            <solid android:color="#0fe2e2e2" />
+            <corners android:radius="@dimen/Social_spacing_middle" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:left="1.5dip" android:top="1.5dip" android:right="1.5dip" android:bottom="1.5dip" />
+            <solid android:color="#14e2e2e2" />
+            <corners android:radius="@dimen/Social_spacing_middle" />
+        </shape>
+    </item>
+    <item android:id="@+id/itemShape">
+        <shape>
+            <solid android:color="@color/social_white" />
+            <corners android:radius="@dimen/Social_spacing_middle" />
+        </shape>
+    </item>
+</layer-list>

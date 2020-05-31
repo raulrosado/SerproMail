@@ -34,9 +34,6 @@ import java.util.ArrayList;
 public class AdministrarCuentas extends AppCompatActivity {
     ConexionSQLiteHelper conn;
     LinearLayout addNewCuenta;
-    CardView cardNewCuenta;
-    Button btnAdddCuenta;
-    EditText edtnombre,edtemail,edtpassword;
     RecyclerView recyclerListaCuentas;
     ArrayList<Cuentas> lista;
 
@@ -47,11 +44,6 @@ public class AdministrarCuentas extends AppCompatActivity {
         conn = new ConexionSQLiteHelper(getApplicationContext());//conexion  con la bd
 
         addNewCuenta = findViewById(R.id.addNewCuenta);
-        cardNewCuenta = findViewById(R.id.cardNewCuenta);
-        btnAdddCuenta = findViewById(R.id.btnAdddCuenta);
-        edtnombre = findViewById(R.id.edtnombre);
-        edtemail = findViewById(R.id.edtemail);
-        edtpassword = findViewById(R.id.edtpassword);
         recyclerListaCuentas = findViewById(R.id.recyclerListaCuentas);
 
         //PARA MOSTRAR LAS PROPAGANDAS
@@ -64,18 +56,13 @@ public class AdministrarCuentas extends AppCompatActivity {
         addNewCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("mail","el dialog");
-                cardNewCuenta.setVisibility(View.VISIBLE);
+                //cardNewCuenta.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(getApplicationContext(), FormAddPersonCuenta.class);
+                intent.putExtra("dvengo", 1);
+                startActivity(intent);
             }
         });
 
-        btnAdddCuenta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                conn.addCuenta(edtnombre.getText().toString(), edtemail.getText().toString(), edtpassword.getText().toString());
-                Toast.makeText(AdministrarCuentas.this, "Se agrego la cuenta", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu){
@@ -134,10 +121,7 @@ public class AdministrarCuentas extends AppCompatActivity {
                             editor.putString("Email", lista.get(recyclerListaCuentas.getChildAdapterPosition(v)).getEmail());
                             editor.putString("Password", lista.get(recyclerListaCuentas.getChildAdapterPosition(v)).getPassword());
                             editor.commit();
-
-
                             loadCuentas();
-
                         }
                     });
                     recyclerListaCuentas.setAdapter(adapterCuentasAsistent);

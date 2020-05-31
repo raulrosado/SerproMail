@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MensajesChat">
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimaryDark"
+        android:paddingStart="@dimen/Social_spacing_standard_new"
+        android:paddingEnd="@dimen/Social_spacing_standard_new">
+
+        <ImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/Social_spacing_middle"
+            android:layout_marginBottom="@dimen/Social_spacing_middle"
+            android:background="@drawable/social_bg_primary_corner"
+            android:backgroundTint="@color/social_light_gray"
+            android:padding="@dimen/Social_spacing_control_half"
+            android:src="@drawable/social_ic_keyboard_arrow_left"
+            android:tint="#fff" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardProfile"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_toEndOf="@+id/ivProfile"
+            app:cardCornerRadius="@dimen/Social_spacing_standard"
+            app:cardElevation="0.0dip">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/social_light_blue"
+                android:src="@drawable/social_ic_user1_1" />
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_toStartOf="@+id/ivCall"
+            android:layout_toEndOf="@+id/cardProfile"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nameUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Raul Remedios Rosado"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/emailUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Today 9:20am"
+                android:textColor="#fff" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/Social_spacing_standard"
+            android:src="@drawable/social_ic_call"
+            android:tint="#fff" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerMensajes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rlBottom"
+        android:layout_below="@+id/rlTop"
+        android:orientation="vertical"
+        android:paddingTop="3dp"
+        app:reverseLayout="true" />
+
+    <RelativeLayout
+        android:id="@+id/rlBottom"
+        android:background="@color/social_light_gray"
+        android:paddingTop="@dimen/_10sdp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <ImageView android:layout_gravity="end|center" android:id="@+id/ivEmojis" android:padding="@dimen/Social_spacing_standard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/social_ic_insert_emoticon" android:tint="#444" android:layout_centerVertical="true" android:layout_marginStart="@dimen/Social_spacing_control" />
+        <EditText android:textColor="@color/colorPrimary" android:id="@+id/edText" android:background="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Mensaje" android:layout_centerVertical="true" android:layout_toStartOf="@+id/ivSend" android:layout_toEndOf="@+id/ivEmojis" />
+        <ImageView android:id="@+id/ivSend" android:padding="@dimen/Social_spacing_standard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/socialic_send_black" android:layout_centerVertical="true" android:rotation="310.0" android:layout_toStartOf="@+id/ivPin" />
+        <ImageView android:id="@+id/ivPin" android:padding="@dimen/Social_spacing_standard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/social_ic_attachment_2" android:layout_centerVertical="true" android:layout_toStartOf="@+id/ivAudio" />
+        <ImageView android:id="@+id/ivAudio" android:padding="@dimen/Social_spacing_middle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/social_ic_mic_line" android:layout_centerVertical="true" android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

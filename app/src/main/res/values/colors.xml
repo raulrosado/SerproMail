@@ -5,6 +5,20 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="bluedark">#3700B3</color>
     <color name="colorTitles2">#EAE9E9</color>
+    <color name="colorgris">#EFEEEE</color>
     <color name="colorCuentas">#E8103F</color>
     <color name="azulito">#A98833CD</color>
+
+    <color name="social_blue">#A90A24E6</color>
+    <color name="social_colorAccent">#A96F19A5</color>
+    <color name="social_light_gray">#A9C3BFC5</color>
+    <color name="social_colorPrimary">#A90123D1</color>
+    <color name="social_form_google">#A9D10138</color>
+    <color name="social_white">#DAFAF7F8</color>
+    <color name="social_view_color">#DAA6410E</color>
+    <color name="social_textColorSecondary">#DA4A5FED</color>
+
+    <color name="social_textColorPrimary">#DA4A5FED</color>
+    <color name="social_light_blue">#DA4A5FED</color>
+    <color name="white">#ffff</color>
 </resources>

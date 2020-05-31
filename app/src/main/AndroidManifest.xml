@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddPersona"></activity>
+        <activity android:name=".MensajesChat"></activity>
+        <activity android:name=".FormAddPersonCuenta" />
         <activity android:name=".AdministrarCuentas" />
         <activity android:name=".Setting" />
         <activity android:name=".MainActivity">

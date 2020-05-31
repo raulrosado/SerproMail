@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/linearCuentas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/letraNombre"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="FRR"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:background="@drawable/radiogris"
+            android:padding="10dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/nombreCuentas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fidel Remedios Rosado"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/estadoCuentas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:visibility="invisible"
+            android:src="@drawable/ic_delete_black_24dp"/>
+    </LinearLayout>
+</LinearLayout>

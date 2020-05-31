@@ -22,11 +22,15 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
   @Override
   public void onCreate(SQLiteDatabase db) {
       db.execSQL(utilidades.CREAR_CUENTAS);
+      db.execSQL(utilidades.CREAR_CONTACTOS);
+      db.execSQL(utilidades.CREAR_MENSAJES);
   }
 
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
       db.execSQL("DROP TABLE IF EXISTS "+utilidades.TABLA_CUENTAS);
+      db.execSQL("DROP TABLE IF EXISTS "+utilidades.TABLA_CONTACTOS);
+      db.execSQL("DROP TABLE IF EXISTS "+utilidades.TABLA_MENSAJE);
   }
 
   public void vaciarCuentas(){
@@ -79,6 +83,62 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
         Log.d(TAG, "Update estado user2: " + lid2);
         Log.d(TAG, "Update estado user: " + lid);
+    }
+
+    public void addContacto(Integer idCuenta,String nombre, String email) {
+        SQLiteDatabase db2 = this.getWritableDatabase();   //se conecta a la db
+        long lid = 0;
+        ContentValues values = new ContentValues();
+        values.put(utilidades.Cont_idCuenta, idCuenta);
+        values.put(utilidades.Cont_nombre, nombre);
+        values.put(utilidades.Cont_email, email);
+        values.put(utilidades.Cont_estado, 0);
+        // Inserting Row
+        lid = db2.insert(utilidades.TABLA_CONTACTOS, null, values);
+        db2.close(); // Closing database connection
+        Log.d(TAG, "New contacto inserted into sqlite: " + lid);
+    }
+
+    public void addMensaje(String idCuenta,String idTo,String mensaje, String adjunto) {
+        Integer count =0;
+        long lid = 0;
+        SQLiteDatabase db = this.getReadableDatabase();   //se conecta a la db
+        try {
+          Cursor cursor = db.rawQuery("SELECT "+ utilidades.M_mensaje +" FROM " + utilidades.TABLA_MENSAJE + " WHERE "+utilidades.M_mensaje+" = '" + mensaje
+                  + "' AND "+utilidades.M_idTo+" = '"+idTo+"' AND "+utilidades.M_idCuenta+" = '"+idCuenta+"' ", null);
+          Log.d(TAG, "cantidad: "+cursor.getCount());
+          count = cursor.getCount();
+          if(cursor.moveToNext()){
+              Log.d(TAG, "error ya esta en la bd");
+
+          }else{
+        //agrego
+              SQLiteDatabase db2 = this.getWritableDatabase();   //se conecta a la db
+              lid = 0;
+              ContentValues values = new ContentValues();
+              values.put(utilidades.M_idCuenta, idTo);
+              values.put(utilidades.M_idTo, idCuenta);
+              values.put(utilidades.M_mensaje, mensaje);
+              values.put(utilidades.M_adjunto, adjunto);
+              values.put(utilidades.M_estado, 0);
+              // Inserting Row
+              lid = db2.insert(utilidades.TABLA_MENSAJE, null, values);
+              db2.close(); // Closing database connection
+              Log.d(TAG, "New email inserted into sqlite: " + lid);
+
+          }
+        }catch (SQLException e){  }
+    }
+
+    public void changeMensajesStatus(Integer idMensaje){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        String[] parametros = {idMensaje.toString()};
+        values.put(utilidades.M_estado, 1);
+        // update Row
+        long lid = db.update(utilidades.TABLA_MENSAJE, values, utilidades.M_idMensaje+"=?",parametros);
+        db.close(); // Closing database connection
+        Log.d(TAG, "Update mensaje: " + lid);
     }
 //
 //  //funcion para agregar las fotos a la db del celular
