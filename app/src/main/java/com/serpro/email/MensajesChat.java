@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class MensajesChat extends AppCompatActivity implements View.OnClickListe
     EditText edText;
     RecyclerView recyclerMensajes;
     ArrayList<MensajesEmails> listaMensajes;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class MensajesChat extends AppCompatActivity implements View.OnClickListe
         nameUser = findViewById(R.id.nameUser);
         emailUser = findViewById(R.id.emailUser);
         edText = findViewById(R.id.edText);
+        progressBar = findViewById(R.id.progressBar);
 
         recyclerMensajes = findViewById(R.id.recyclerMensajes);
         //PARA MOSTRAR LAS PROPAGANDAS
@@ -69,8 +72,6 @@ public class MensajesChat extends AppCompatActivity implements View.OnClickListe
 
             Log.d("mailEmail",email);
         }catch (Exception e){}
-
-
 
         idUserSelect = getIntent().getExtras().getInt("idSelected");
         idEmailSelect = getIntent().getExtras().getString("idEmailSelect");
@@ -118,9 +119,6 @@ public class MensajesChat extends AppCompatActivity implements View.OnClickListe
 
                     Log.d("ENBD", "idcuenta:"+cursor.getString(1)+"-- idto: "+ cursor.getString(2));
 
-
-
-
                     AdapterMensajes adapterMensajes = new AdapterMensajes(listaMensajes, getApplicationContext(),email);
                     adapterMensajes.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -146,17 +144,28 @@ public class MensajesChat extends AppCompatActivity implements View.OnClickListe
     }
 
     private void EnviarCorreo() {
-        String sCorreo = idEmailSelect;
-        String sAsunto = "SerproApiClient";
-        String sMensaje = edText.getText().toString().trim();
-        clsEnviaCorreo objCorreo = new clsEnviaCorreo(getApplicationContext(), sCorreo, sAsunto, sMensaje, email,password);
-        String sendDate = objCorreo.getSendD();
-        objCorreo.execute();
+        if(edText.getText().toString().trim().isEmpty() || (idEmailSelect.isEmpty())) {
+            Toast.makeText(this, "Escriba un mensaje...", Toast.LENGTH_SHORT).show();
+        }else{
 
-        conn.addMensaje(email,idEmailSelect,sMensaje,"", sendDate);
-        edText.setText("");
-        Funciones.loadEmailServer(getApplicationContext(),email,password);
-        loadMensajesUser(idEmailSelect);
+            String sCorreo = idEmailSelect;
+            String sAsunto = "SerproApiClient";
+            String sMensaje = edText.getText().toString().trim();
+            clsEnviaCorreo objCorreo = new clsEnviaCorreo(getApplicationContext(), sCorreo, sAsunto, sMensaje, email, password);
+            String sendDate = objCorreo.getSendD();
+            objCorreo.execute();
+            conn.addMensaje(email, idEmailSelect, sMensaje, "", sendDate, 0);
+            edText.setText("");
+
+            //CARGO LOS CORREOS DEL SERVIDOR
+            try {
+                //Funciones.loadEmailServer(getContext(),email,password,progressBar);
+                clsRecuperarCorreos objRecuperarCorreo = new clsRecuperarCorreos(getApplicationContext(), email,password,0);
+                objRecuperarCorreo.execute();
+            }catch (Exception e){}
+
+            loadMensajesUser(idEmailSelect);
+        }
     }
 
     @Override

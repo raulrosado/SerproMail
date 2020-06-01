@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:layout_toStartOf="@+id/ivCall"
+            android:layout_toStartOf="@id/progressBar2"
             android:layout_toEndOf="@+id/cardProfile"
             android:orientation="vertical">
 
@@ -76,6 +76,15 @@
             android:padding="@dimen/Social_spacing_standard"
             android:src="@drawable/social_ic_call"
             android:tint="#fff" />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="6dp"
+            android:layout_toStartOf="@+id/ivCall"
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -96,11 +105,44 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <ImageView android:layout_gravity="end|center" android:id="@+id/ivEmojis" android:padding="@dimen/Social_spacing_standard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/social_ic_insert_emoticon" android:tint="#444" android:layout_centerVertical="true" android:layout_marginStart="@dimen/Social_spacing_control" />
+        <ImageView
+            android:layout_gravity="end|center"
+            android:id="@+id/ivEmojis"
+            android:padding="@dimen/Social_spacing_standard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_a_photo_black_24dp"
+            android:tint="#444"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/Social_spacing_control" />
         <EditText android:textColor="@color/colorPrimary" android:id="@+id/edText" android:background="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Mensaje" android:layout_centerVertical="true" android:layout_toStartOf="@+id/ivSend" android:layout_toEndOf="@+id/ivEmojis" />
-        <ImageView android:id="@+id/ivSend" android:padding="@dimen/Social_spacing_standard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/socialic_send_black" android:layout_centerVertical="true" android:rotation="310.0" android:layout_toStartOf="@+id/ivPin" />
-        <ImageView android:id="@+id/ivPin" android:padding="@dimen/Social_spacing_standard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/social_ic_attachment_2" android:layout_centerVertical="true" android:layout_toStartOf="@+id/ivAudio" />
-        <ImageView android:id="@+id/ivAudio" android:padding="@dimen/Social_spacing_middle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/social_ic_mic_line" android:layout_centerVertical="true" android:layout_alignParentEnd="true" />
+        <ImageView
+            android:id="@+id/ivSend"
+            android:padding="@dimen/Social_spacing_standard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/socialic_send_black"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:rotation="310.0"
+            android:layout_toStartOf="@+id/ivPin" />
+        <ImageView
+            android:id="@+id/ivPin"
+            android:padding="@dimen/Social_spacing_standard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/social_ic_attachment_2"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toStartOf="@+id/ivAudio" />
+        <ImageView android:id="@+id/ivAudio"
+            android:layout_marginLeft="5dp"
+            android:padding="@dimen/Social_spacing_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/social_ic_mic_line"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +74,7 @@ public class Chats extends Fragment {
     ArrayList<MensajesEmails> listaMensajes;
     ArrayList<Contactos> listaContactos;
     ArrayList<String> chatactivos = new ArrayList<String>();
+    ProgressBar progressBar;
 
     public Chats() {
         // Required empty public constructor
@@ -114,6 +116,7 @@ public class Chats extends Fragment {
         conn = new ConexionSQLiteHelper(getContext());//conexion  con la bd
         textView = vista.findViewById(R.id.textView);
         scan = vista.findViewById(R.id.scan);
+        progressBar = vista.findViewById(R.id.progressBar);
         listaChatsActivos = vista.findViewById(R.id.listaChatsActivos);
         //PARA MOSTRAR LAS PROPAGANDAS
         listaChatsActivos.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
@@ -128,15 +131,17 @@ public class Chats extends Fragment {
             email = preferencias.getString("Email","");
             password = preferencias.getString("Password","");
             SharedPreferences.Editor editor=preferencias.edit();
-
             textView.setText(email + "--"+ password);
         }catch (Exception e){}
 
-        //CARGO LOS CORREOS
-//        loadEmails();
-        Funciones.loadEmailServer(getContext(),email,password);
+        //CARGO LOS CORREOS DEL SERVIDOR
+        try {
+//            Funciones.loadEmailServer(getContext(),email,password,progressBar);
+            clsRecuperarCorreos objRecuperarCorreo = new clsRecuperarCorreos(getContext(), email,password,1);
+            objRecuperarCorreo.execute();
+        }catch (Exception e){}
 
-        //cargo los char activos
+        //cargo los chaT activos
         loadCharActivos(email);
         mostrarContacto(contactos);
 
@@ -167,7 +172,6 @@ public class Chats extends Fragment {
                 }
             });
             listaChatsActivos.setAdapter(adapterContactos);
-
         }
 
     }
@@ -194,134 +198,6 @@ public class Chats extends Fragment {
             Toast.makeText(getContext(),"Problema al buscar los contactos",Toast.LENGTH_LONG).show();
         }
     }
-//
-//    public void loadEmails(){
-//        MailService mailService = new MailService();
-//        try {
-//            mailService.login("imap.nauta.cu",email, password);
-//            Integer cantidad = mailService.getMessageCount();
-//
-//            textView.setText("cantidad de correos: "+ cantidad.toString());
-//            Toast.makeText(getContext(), "cantidad de mensajes: "+ cantidad.toString(), Toast.LENGTH_SHORT).show();
-//            Log.d("mail", "cargo los mensages: "+cantidad.toString());
-//
-//            Message[] mensajes = mailService.getMessages();
-//
-//            for (Message current : mensajes) {
-//                String contentType = current.getContentType();
-//
-//                String a =  current.getSubject();
-//                String b = "SerproApiClient";
-//// son iguales
-//                if (a.equalsIgnoreCase(b)) {
-//                    System.out.println("lol message from: " + ((InternetAddress) current.getFrom()[0]).getAddress());
-//                    System.out.println("lol titulo: " + current.getSubject());
-//                    System.out.println("lol message " + getText(current));
-//                    System.out.println("---------------------------------------------");
-//                    System.out.println("a y b son iguales");
-//
-//                    conn.addMensaje(email,((InternetAddress) current.getFrom()[0]).getAddress(),getText(current),"");
-//                }
-//            }
-////
-////
-//////                        Object content = current.getContent();
-//////                        if (content instanceof MimeMultipart) {
-//////                            System.out.println("lol <<<<<<<<<MULTIPART>>>>>>>>>");
-//////                            for (int i = 0; i < ((MimeMultipart) content).getCount(); i++) {
-//////
-//////                                System.out.println("lol sub contentType "+((MimeMultipart) content).getBodyPart(i).getContentType());
-//////                                System.out.println("lol " + getText(((MimeMultipart) content).getBodyPart(i)));
-//////                                String c = getText(((MimeMultipart) content).getBodyPart(i));
-//////                                System.out.println("lol message "+i+" " + c);
-//////                            }
-//////                        } else {
-//////                            System.out.println("lol <<<<<<<<<<<NO MULTIPART>>>>>>>>>>");
-//////                            System.out.println("lol message "+getText((Part)content));
-//////                        }
-////                    }
-////
-////                    for (int i=0;i<mensajes.length;i++)
-////                    {
-////
-////                        Log.d("mail", "From:"+mensajes[i].getFrom()[0].toString());
-////                        Log.d("mail", "Subject:"+mensajes[i].getSubject());
-////
-////                        if(mensajes[i].getFrom()[0].toString() == "raulrosado91@nauta.cu"){
-////                            Log.d("mio", "estos mensajes son mios");
-////                        }
-////
-////                        if(mensajes[i].getSubject()=="......"){
-////                            Log.d("mail", "imprimio0ooooo");
-////
-////                        }
-////                    }
-//            mailService.logout();
-//        }catch (Exception e){
-//            Log.d("mail", "error: "+e);
-//        }
-//    }
-//
-//    private String getText(Part p) throws MessagingException, IOException {
-//        if (p.isMimeType("text/*")) {
-//            System.out.println("lol mime text/*");
-//            String s = (String)p.getContent();
-////            textIsHtml = p.isMimeType("text/html");
-//            return s;
-//        }
-//
-//        if (p.isMimeType("multipart/alternative")) {
-//            // prefer html text over plain text
-//            Multipart mp = (Multipart)p.getContent();
-//            String text = null;
-//            for (int i = 0; i < mp.getCount(); i++) {
-//                Part bp = mp.getBodyPart(i);
-//                if (bp.isMimeType("text/plain")) {
-//                    if (text == null)
-//                        text = getText(bp);
-//                    continue;
-//                } else if (bp.isMimeType("text/html")) {
-//                    String s = getText(bp);
-//                    if (s != null){
-//                        return s;
-//                    }
-//                } else {
-//                    return getText(bp);
-//                }
-//            }
-//            return text;
-//        } else if (p.isMimeType("multipart/*")) {
-//            Multipart mp = (Multipart)p.getContent();
-//            for (int i = 0; i < mp.getCount(); i++) {
-//                String s = getText(mp.getBodyPart(i));
-//                if (s != null)
-//                    return s;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    public String getContent(BodyPart bodyPart) throws IOException, MessagingException {
-//
-//        Object o = bodyPart.getContent();
-//
-//        if (o instanceof MimeMultipart){
-//            System.out.println("lol bodypart is multipart ");
-//            MimeMultipart mimeMultipart = (MimeMultipart) bodyPart.getContent();
-//            for (int j = 0; j < mimeMultipart.getCount(); j++) {
-//                getContent(mimeMultipart.getBodyPart(j));
-//            }
-//        }
-//        else if (o instanceof String) {
-//            System.out.println("lol content string");
-//            return (String) o;
-//        } else if (null != bodyPart.getDisposition() && bodyPart.getDisposition().equalsIgnoreCase(Part.ATTACHMENT)) {
-//            System.out.println("lol content not string");
-//            return "file "+bodyPart.getContent();
-//        }
-//
-//        return null;
-//    }
 
     public void loadCharActivos(String idemail){
         SQLiteDatabase db = conn.getReadableDatabase();   //se conecta a la db
@@ -333,9 +209,7 @@ public class Chats extends Fragment {
             if(cursor.getCount() > 0){
                 while (cursor.moveToNext()) {
                     Log.d("chatO", idemail +"-------" + cursor.getString(2).toString());
-
                     String a =cursor.getString(2).toString();
-
                     if (a.equalsIgnoreCase(idemail)) {}else{
                         if (chatactivos.contains(cursor.getString(2).toString())) {
                         } else {

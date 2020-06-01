@@ -41,6 +41,8 @@ public class AdministrarCuentas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administrar_cuentas);
+        getSupportActionBar().setTitle("Cuentas de usuario");
+
         conn = new ConexionSQLiteHelper(getApplicationContext());//conexion  con la bd
 
         addNewCuenta = findViewById(R.id.addNewCuenta);

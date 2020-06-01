@@ -21,7 +21,7 @@ public class Setting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
+        getSupportActionBar().setTitle("Configuración");
         nombreUsuarioCuenta = findViewById(R.id.nombreUsuarioCuenta);
 
         try {

@@ -1,29 +1,16 @@
 package com.serpro.email;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.serpro.email.utilidades.utilidades;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Properties;
 
 import javax.mail.BodyPart;
 import javax.mail.Message;
@@ -32,133 +19,55 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimePart;
 
-public class Funciones {
+public class clsRecuperarCorreos extends AsyncTask<Void,Void,Void> {
+    private Context context;
+    private String email,emailConf,passwordConf,Message_ID;
+    private Integer ddonde;
 
-
-    /**
-     *  Email Address Validation
-     */
-    public static boolean isValidEmailAddress(String email) {
-        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
-        java.util.regex.Matcher m = p.matcher(email);
-        return m.matches();
+    public clsRecuperarCorreos(Context context, String emailConf, String passwordConf,Integer ddonde) {
+        this.context = context;
+        this.email = email;
+        this.emailConf = emailConf;
+        this.passwordConf = passwordConf;
+        this.Message_ID = Message_ID;
     }
 
-    /**
-     *  Hide Keyboard
-     */
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) activity.getSystemService(
-                        Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(
-                activity.getCurrentFocus().getWindowToken(), 0);
+//    @Override
+    protected void onProgressUpdate() {
+        Log.d("chat","trabajando");
     }
 
-    public  static void guardarSharedInformacion(Activity activity, String nombre, String email, String idCuenta)
-    {
-        SharedPreferences preferencias = activity.getSharedPreferences("usuarioactivo", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferencias.edit();
-        editor.putString("idCuenta", idCuenta);
-        editor.putString("Nombre", nombre);
-        editor.putString("Email", email);
-        editor.commit();
-    }
-//
-//    public static String loadServerConfig(Context context) {
-//        ConexionSQLiteHelper conn;
-//        //hago la coneccion con la BD
-//        conn = new ConexionSQLiteHelper(context);
-//
-//        SQLiteDatabase db = conn.getReadableDatabase();   //se conecta a la db
-//        String dev ="";
-//
-//        try {
-//            Cursor cursor = db.rawQuery("SELECT * FROM "+ utilidades.TABLA_CONFIGURACION,null);
-//            if(cursor.getCount() > 0){
-//                while (cursor.moveToNext()) {
-//                    dev = cursor.getString(1);
-//                }
-//            }else{
-//               // Toast.makeText(context, "Esta vacia la bd", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        }catch (Exception e){
-//            Toast.makeText(context,"Problema al buscar las configuraciones",Toast.LENGTH_LONG).show();
-//        }
-//        return dev;
-//    }
-
-
-    public static String loadFecha(){
-        Calendar calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
-        SimpleDateFormat sdf;
-        sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(date);
-    }
-    public static String loadHora(){
-        Calendar calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
-        SimpleDateFormat sdf;
-        sdf = new SimpleDateFormat("HH:mm:ss");
-        return sdf.format(date);
+    @Override
+    protected void onPreExecute() {
+        Log.d("chat","anted de ejecutar");
     }
 
-    public static String substringBetween(String str, String open,  String close) {
-        if (str == null || open == null || close == null) {
-            return null;
-        }
-
-        int start = str.indexOf(open);
-        if (start != -1) {
-            int end = str.indexOf(close, start + open.length());
-            if (end != -1) {
-                return str.substring(start + open.length(), end);
-            } else {
-
-            }
-        }
-        return null;
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        Toast.makeText(context, "Tarea finalizada!",Toast.LENGTH_SHORT).show();
+        Log.d("chat","se termino la ejecucion");
     }
 
-//    public static void showToastSuccess(Activity context) {
-//        LayoutInflater inflater = context.getLayoutInflater();
-//        View layout = inflater.inflate(R.layout.recuadro_acept, (ViewGroup) context.findViewById(R.id.recuadroSuccess));
-//        Toast toast = new Toast(context);
-//        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-//        toast.setDuration(Toast.LENGTH_LONG);
-//        toast.setView(layout);
-//        toast.show();
-//    }
-//
-//    public static void showToastError(Activity context) {
-//        LayoutInflater inflater = context.getLayoutInflater();
-//        View layout = inflater.inflate(R.layout.recuadro_error, (ViewGroup) context.findViewById(R.id.recuadroError));
-//        Toast toast = new Toast(context);
-//        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-//        toast.setDuration(Toast.LENGTH_LONG);
-//        toast.setView(layout);
-//        toast.show();
-//    }
+    @Override
+    protected void onCancelled() {
+        Toast.makeText(context, "Tarea cancelada!",Toast.LENGTH_SHORT).show();
+    }
 
-
-    public  static void loadEmailServer(Context context, String email, String password, ProgressBar progressBar){
+    @Override
+    protected Void doInBackground(Void... voids) {
         ConexionSQLiteHelper conn;
         //hago la coneccion con la BD
         conn = new ConexionSQLiteHelper(context);
 
         MailService mailService = new MailService();
         try {
-            progressBar.setVisibility(View.VISIBLE);
-            mailService.login("imap.nauta.cu",email, password);
+            mailService.login("imap.nauta.cu",emailConf, passwordConf);
             Integer cantidad = mailService.getMessageCount();
             Log.d("mail", "cargo los mensages: "+cantidad.toString());
 
@@ -197,7 +106,7 @@ public class Funciones {
                 System.out.println("lol ------------------------------------------------------------- " );
                 String contentType = current.getContentType();
 
-             //   String aa = mailService.getUID(Message message)
+                //   String aa = mailService.getUID(Message message)
                 String a =  current.getSubject();
                 String b = "SerproApiClient";
 
@@ -206,23 +115,24 @@ public class Funciones {
                 if (a.equalsIgnoreCase(b)) {
                     System.out.println("lol message from: " + ((InternetAddress) current.getFrom()[0]).getAddress());
                     System.out.println("lol reciverdate: " + current.getSentDate().toString());
-                   // System.out.println("lol header: " + current.getUID(current));
+                    // System.out.println("lol header: " + current.getUID(current));
                     System.out.println("lol message " + Funciones.getText(current));
                     System.out.println("---------------------------------------------");
                     System.out.println("a y b son iguales");
 
                     reciverdate = current.getSentDate().toString();
-                    conn.addMensaje(email,((InternetAddress) current.getFrom()[0]).getAddress(),Funciones.getText(current),"", Message_ID,1);
+                    conn.addMensaje(emailConf,((InternetAddress) current.getFrom()[0]).getAddress(),Funciones.getText(current),"", Message_ID,ddonde);
                 }
             }
             mailService.logout();
-            progressBar.setVisibility(View.INVISIBLE);
         }catch (Exception e){
             Log.d("mail", "error: "+e);
         }
+
+        return null;
     }
 
-    public static String getText(Part p) throws MessagingException, IOException {
+    private static String getText(Part p) throws MessagingException, IOException {
         if (p.isMimeType("text/*")) {
             System.out.println("lol mime text/*");
             String s = (String)p.getContent();
@@ -280,6 +190,23 @@ public class Funciones {
             return "file "+bodyPart.getContent();
         }
 
+        return null;
+    }
+
+    public static String substringBetween(String str, String open,  String close) {
+        if (str == null || open == null || close == null) {
+            return null;
+        }
+
+        int start = str.indexOf(open);
+        if (start != -1) {
+            int end = str.indexOf(close, start + open.length());
+            if (end != -1) {
+                return str.substring(start + open.length(), end);
+            } else {
+
+            }
+        }
         return null;
     }
 

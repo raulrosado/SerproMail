@@ -22,7 +22,7 @@ public class FormAddPersonCuenta extends AppCompatActivity {
     TextInputLayout lTextPassword;
     EditText edtnombre,edtemail,edtpassword;
     String nombre, email;
-    Integer idCuenta;
+    String idCuenta;
     Button addNewPerson;
     Integer dvengo = 0;
 
@@ -41,12 +41,12 @@ public class FormAddPersonCuenta extends AppCompatActivity {
             dvengo = 1;
             lTextPassword.setVisibility(View.VISIBLE);
         }
-        //VARIABLES GUARDADAS
+
         try {
             SharedPreferences preferencias = getSharedPreferences("usuarioactivo", Context.MODE_PRIVATE);
+            idCuenta = preferencias.getString("idCuenta", "");
             nombre = preferencias.getString("Nombre","");
             email = preferencias.getString("Email","");
-            idCuenta = Integer.parseInt(preferencias.getString("idCuenta",""));
             SharedPreferences.Editor editor=preferencias.edit();
         }catch (Exception e){}
 
@@ -54,11 +54,16 @@ public class FormAddPersonCuenta extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(dvengo == 1){
-                    conn.addCuenta(edtnombre.getText().toString(), edtemail.getText().toString(), edtpassword.getText().toString());
+                    conn.addCuenta(getApplicationContext(),edtnombre.getText().toString(), edtemail.getText().toString(), edtpassword.getText().toString());
                     Toast.makeText(FormAddPersonCuenta.this, "Se agrego la cuenta", Toast.LENGTH_SHORT).show();
+
                 }else{
-                    conn.addContacto(idCuenta, edtnombre.getText().toString(), edtemail.getText().toString());
-                    Toast.makeText(FormAddPersonCuenta.this, "Se agrego el contacto", Toast.LENGTH_SHORT).show();
+                    if(idCuenta == null){
+                        Toast.makeText(FormAddPersonCuenta.this, "Deve agregar una cuenta", Toast.LENGTH_SHORT).show();
+                    }else {
+                        conn.addContacto(idCuenta, edtnombre.getText().toString(), edtemail.getText().toString());
+                        Toast.makeText(FormAddPersonCuenta.this, "Se agrego el contacto", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 Intent intent = null;

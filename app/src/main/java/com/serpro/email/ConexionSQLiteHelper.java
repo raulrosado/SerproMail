@@ -3,6 +3,7 @@ package com.serpro.email;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,18 +41,45 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
       db.close(); // Closing database connection
   }
 
-    public void addCuenta(String nombre, String email, String password) {
-        SQLiteDatabase db2 = this.getWritableDatabase();   //se conecta a la db
+    public void addCuenta(Context context, String nombre, String email, String password) {
+        Integer count =0;
         long lid = 0;
-        ContentValues values = new ContentValues();
-        values.put(utilidades.Conf_nombre, nombre);
-        values.put(utilidades.Conf_email, email);
-        values.put(utilidades.Conf_password, password);
-        values.put(utilidades.Conf_estado, 0);
-        // Inserting Row
-        lid = db2.insert(utilidades.TABLA_CUENTAS, null, values);
-        db2.close(); // Closing database connection
-        Log.d(TAG, "New cuenta inserted into sqlite: " + lid);
+        SQLiteDatabase db = this.getReadableDatabase();   //se conecta a la db
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT "+ utilidades.Cont_idCuenta +" FROM " + utilidades.TABLA_CUENTAS + "", null);
+            Log.d(TAG, "cantidad: "+cursor.getCount());
+            count = cursor.getCount();
+
+            SQLiteDatabase db2 = this.getWritableDatabase();   //se conecta a la db
+            ContentValues values = new ContentValues();
+            values.put(utilidades.Conf_nombre, nombre);
+            values.put(utilidades.Conf_email, email);
+            values.put(utilidades.Conf_password, password);
+                if(cursor.moveToNext()){
+                    Log.d(TAG, "error ya esta en la bd");
+                    values.put(utilidades.Conf_estado, 0);
+                }else{
+                    //agrego
+                    values.put(utilidades.Conf_estado, 1);
+
+                    //VARIABLES GUARDADAS
+                    SharedPreferences preferencias = context.getSharedPreferences("usuarioactivo", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferencias.edit();
+                    editor.putString("idCuenta","1");
+                    editor.putString("Nombre", nombre);
+                    editor.putString("Email", email);
+                    editor.putString("Password", password);
+                    editor.commit();
+
+                }
+            // Inserting Row
+            lid = db2.insert(utilidades.TABLA_CUENTAS, null, values);
+            db2.close(); // Closing database connection
+            Log.d(TAG, "New cuenta inserted into sqlite: " + lid);
+
+        }catch (SQLException e){  }
+
     }
 
     public void updateCuenta(String idCuenta, String nombre, String email, String password){
@@ -85,7 +113,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         Log.d(TAG, "Update estado user: " + lid);
     }
 
-    public void addContacto(Integer idCuenta,String nombre, String email) {
+    public void addContacto(String idCuenta,String nombre, String email) {
         SQLiteDatabase db2 = this.getWritableDatabase();   //se conecta a la db
         long lid = 0;
         ContentValues values = new ContentValues();
@@ -99,13 +127,12 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         Log.d(TAG, "New contacto inserted into sqlite: " + lid);
     }
 
-    public void addMensaje(String idCuenta,String idTo,String mensaje, String adjunto, String reciverdate) {
+    public void addMensaje(String idCuenta,String idTo,String mensaje, String adjunto, String reciverdate,Integer ddonde) {
         Integer count =0;
         long lid = 0;
         SQLiteDatabase db = this.getReadableDatabase();   //se conecta a la db
         try {
           Cursor cursor = db.rawQuery("SELECT "+ utilidades.M_mensaje +" FROM " + utilidades.TABLA_MENSAJE + " WHERE "+utilidades.M_reciverdate+" = '"+reciverdate+"' ", null);
-
           Log.d(TAG, "cantidad: "+cursor.getCount());
           count = cursor.getCount();
           if(cursor.moveToNext()){
@@ -115,8 +142,14 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
               SQLiteDatabase db2 = this.getWritableDatabase();   //se conecta a la db
               lid = 0;
               ContentValues values = new ContentValues();
-              values.put(utilidades.M_idCuenta, idTo);
-              values.put(utilidades.M_idTo, idCuenta);
+
+              if(ddonde == 1) {
+                  values.put(utilidades.M_idCuenta, idTo);
+                  values.put(utilidades.M_idTo, idCuenta);
+              }else{
+                  values.put(utilidades.M_idCuenta, idCuenta);
+                  values.put(utilidades.M_idTo, idTo);
+              }
               values.put(utilidades.M_mensaje, mensaje);
               values.put(utilidades.M_adjunto, adjunto);
               values.put(utilidades.M_estado, 0);
